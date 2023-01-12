@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="324.0" prefWidth="324.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="111.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading...">
+         <font>
+            <Font name="Arial Bold" size="23.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="181.0" fitWidth="181.0" layoutX="72.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+         <image>
+            <Image url="@img/nar.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>
