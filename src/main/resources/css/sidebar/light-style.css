@@ -1,0 +1,39 @@
+@import url('../fonts.css');
+
+* {
+	primary: #0084ff;
+	whiteish: #E5E5E5;
+	darkish: #383838;;
+}
+
+.sidebar {
+	-fx-background-color: whiteish;
+}
+
+.icon {
+	-fx-fill: darkish;
+}
+
+.sidebar-btn {
+	-fx-background-color: whiteish;
+	-fx-text-fill: darkish;
+
+	-fx-font-family: Arial;
+	-fx-font-size: 16px;
+
+	-fx-background-radius: 20em;
+	-fx-graphic-text-gap: 20;
+}
+
+.current-tab {
+	-fx-background-color: darkish;
+	-fx-text-fill: whiteish;
+}
+
+.current-tab .icon {
+	-fx-fill: whiteish;
+}
+
+#image-shadow {
+	-fx-effect: dropshadow(three-pass-box, #000000, 10, 0, 2, 2);
+}

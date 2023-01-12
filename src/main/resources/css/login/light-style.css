@@ -1,0 +1,54 @@
+@import url('../fonts.css');
+
+* {
+	primary-color: #0084ff;
+}
+
+.font-replace {
+	-fx-font-family: 'Poppins', Calibri, Helvetica;
+}
+
+.login-field {
+	-fx-font-family: 'Poppins', Calibri, Helvetica;
+	-fx-font-size: 14px;
+}
+
+.login-btn {
+	-fx-border-color: primary-color;
+	-fx-border-radius: 3em;
+	-fx-border-width: 3px;
+
+	-fx-background-radius: 3em;
+
+	-fx-text-fill: primary-color;
+	-fx-font-family: 'Poppins', Calibri, Helvetica;
+	-fx-font-size: 16px;
+	-fx-font-weight: 700;
+}
+
+.login-btn:hover {
+	-fx-border-color: linear-gradient(from 25% 25% to 100% 100%, #0084ff, #28a9d4);
+	-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #0084ff, #28a9d4);
+	-fx-text-fill: #FFFFFF;
+}
+
+.yellow-gradient {
+	-fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #0084ff, #28a9d4);
+}
+
+.yellow-lock {
+	-fx-fill: linear-gradient(from 25% 25% to 100% 100%, #0084ff, #28a9d4);
+}
+
+#title {
+	-fx-text-fill: #0084ff;
+}
+
+#image-shadow {
+	-fx-effect: dropshadow(three-pass-box, #000000, 10, 0, 2, 2);
+}
+
+#copyright {
+	-fx-font-family: 'Arial';
+	-fx-text-fill: #ffffff;
+}
