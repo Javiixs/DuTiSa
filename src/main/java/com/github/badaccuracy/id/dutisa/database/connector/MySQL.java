@@ -39,7 +39,6 @@ public class MySQL {
         properties.setProperty("user", username);
         properties.setProperty("password", password);
 
-
         properties.setProperty("useServerPrepStmts", "false");
         properties.setProperty("cachePrepStmts", "true");
         properties.setProperty("prepStmtCacheSize", "250");

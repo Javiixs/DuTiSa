@@ -13,7 +13,15 @@ module com.github.badaccuracy.id.dutisa {
     requires java.sql;
     requires mysql.connector.java;
 
+    requires com.google.api.client;
+    requires com.google.api.client.auth;
+    requires com.google.api.client.json.gson;
+    requires com.google.api.services.sheets;
+    requires com.google.common;
+    requires com.google.api.client.extensions.java6.auth;
+    requires com.google.api.client.extensions.jetty.auth;
+    requires google.api.client;
 
-    opens com.github.badaccuracy.id.dutisa to javafx.fxml;
+    opens com.github.badaccuracy.id.dutisa;
     exports com.github.badaccuracy.id.dutisa;
 }

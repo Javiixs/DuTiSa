@@ -2,10 +2,7 @@ package com.github.badaccuracy.id.dutisa.menu;
 
 import com.github.badaccuracy.id.dutisa.DuTiSa;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -64,7 +61,19 @@ public class LoginMenu {
     }
 
     private void show() {
+        TextField email = new TextField();
+        PasswordField password = new PasswordField();
 
+        Button button = new Button("Login");
+        button.setOnMouseClicked((event) -> {
+            if (email.getText().isEmpty() || password.getText().isEmpty()) {
+                return;
+            }
+
+            if (email.getText() == password.getText()) {
+
+            }
+        });
     }
 
     private void showErrorDialog() {

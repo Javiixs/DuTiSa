@@ -18,8 +18,8 @@ public class DuTiSa extends Application {
 
     @Override
     public void start(Stage stage) {
-        LoginData loginData = new LoginData();
-        loginData.traineeNumber;
+//        LoginData loginData = new LoginData();
+//        loginData.traineeNumber;
         new LoginMenu();
     }
 
