@@ -76,4 +76,91 @@ public class Utils {
         return DuTiSa.class.getClassLoader().getResource(path);
     }
 
+    private enum PasswordStrength {
+		INVALID,
+		WEAK,
+		MEDIUM,
+		STRONG
+	}
+	
+	public static boolean validateType(String input) {
+		Pattern pattern = Pattern.compile(
+				"[a-z|A-Z|0-9|~|`|!| |@|"
+				+ "#|$|%|^|&|\\*|(|)|_|-|+|"
+				+ "=|{|}|[|]|||\\|:|;|\"|"
+				+ "'|<|,|>|.|?]*"
+		);
+		Matcher matcher = pattern.matcher(input);
+		return matcher.matches();
+	}
+	
+	public static PasswordStrength validate(String input) {
+		if (!validateType(input)) {
+			return PasswordStrength.INVALID;
+		}
+		
+		final int length = input.length();
+
+		int symbolMatches = 0;
+		int capitalLetterMatches = 0;
+		int numberMatches = 0;
+		
+		// Patterns
+		Pattern symbolsPattern = Pattern.compile(
+				"[~|`|!| |@|#|$|%|^|&|\\\\*|(|)|_|-|+|=|{|}|[|]|||\\\\|:|;|\\\"|'|<|,|>|.|?]"
+		);
+		Pattern capitalLetterPattern = Pattern.compile("[A-Z]");
+		Pattern numberPattern = Pattern.compile("[0-9]");
+		
+		// Matchers 
+		Matcher symbolMatcher = symbolsPattern.matcher(input);
+		Matcher capitalLetterMatcher = capitalLetterPattern.matcher(input);
+		Matcher numberMatcher = numberPattern.matcher(input);
+		
+		// Calculate Matches for Symbols, Capital Letters, and Numbers
+		while (symbolMatcher.find()) {
+			symbolMatches++;
+		}
+		
+		while (capitalLetterMatcher.find()) {
+			capitalLetterMatches++;
+		}
+		
+		while (numberMatcher.find()) {
+			numberMatches++;
+		}
+		
+		if (length > 8 && validateType(input)) {
+			/* Strong Condition
+			 * Contains capital letters
+			 * Contains numbers
+			 * Contains symbols
+			 * */
+			if (length >= 12 && 
+				capitalLetterMatches >= 1 && 
+				numberMatches >= 1 && 
+				symbolMatches >= 1
+			) {
+				return PasswordStrength.STRONG;
+			}
+			/* Medium Condition
+			 * Contains capital letters
+			 * Contains numbers
+			 * */
+			else if (capitalLetterMatches >= 1 && 
+					 numberMatches >= 1
+			) {
+				return PasswordStrength.MEDIUM;
+			}
+			/* Weak Condition
+			 * Only contains letters
+			 * */
+			else {
+				return PasswordStrength.WEAK;
+			}
+		}
+		
+		return PasswordStrength.INVALID;
+	}
+    
 }
