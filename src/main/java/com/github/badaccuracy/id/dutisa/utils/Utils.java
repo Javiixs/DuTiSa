@@ -76,7 +76,7 @@ public class Utils {
         return DuTiSa.class.getClassLoader().getResource(path);
     }
 
-    private enum PasswordStrength {
+    public enum PasswordStrength {
 		INVALID,
 		WEAK,
 		MEDIUM,
