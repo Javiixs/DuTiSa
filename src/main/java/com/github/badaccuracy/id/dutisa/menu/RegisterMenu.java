@@ -272,9 +272,17 @@ public class RegisterMenu {
                 errorLabel.setText("Please fill in all fields");
                 return;
             }
+            
+            if (validate(password) == PasswordStrength.STRONG) {
+                errorLabel.setText("Password is strong");
+            } else if (validate(password) == PasswordStrength.MEDIUM) {
+                errorLabel.setText("Password is medium");
+            } else if (validate(password) == PasswordStrength.MEDIUM) {
+                errorLabel.setText("Password is weak");
+            }
 
             boolean canLogin = DuTiSa.getInstance().getTraineeManager().canLogin(username, password);
-            if (!canLogin) {
+            if (!canLogin || validate(password) == PasswordStrength.INVALID) {
                 errorLabel.setText("Invalid username or password");
                 return;
             }
