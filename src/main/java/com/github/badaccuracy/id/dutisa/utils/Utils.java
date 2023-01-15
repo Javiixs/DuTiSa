@@ -132,6 +132,7 @@ public class Utils {
 		
 		if (length > 8 && validateType(input)) {
 			/* Strong Condition
+			 * Has more than 12 characters
 			 * Contains capital letters
 			 * Contains numbers
 			 * Contains symbols
@@ -144,6 +145,7 @@ public class Utils {
 				return PasswordStrength.STRONG;
 			}
 			/* Medium Condition
+			 * Has more than 8 but less than 12 characters
 			 * Contains capital letters
 			 * Contains numbers
 			 * */
