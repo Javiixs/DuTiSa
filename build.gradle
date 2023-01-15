@@ -60,6 +60,9 @@ dependencies {
     // gson
     extraLibs 'com.google.code.gson:gson:2.10.1'
 
+    // commons-io
+    extraLibs 'commons-io:commons-io:2.11.0'
+
     configurations.compileOnly.extendsFrom(configurations.extraLibs)
 }
 

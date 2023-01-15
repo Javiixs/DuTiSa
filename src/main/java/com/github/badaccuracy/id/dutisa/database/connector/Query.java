@@ -2,10 +2,7 @@ package com.github.badaccuracy.id.dutisa.database.connector;
 
 import com.github.badaccuracy.id.dutisa.utils.Closer;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Query {
 
@@ -24,6 +21,11 @@ public class Query {
 
             statement.execute(query);
         }
+    }
+
+    public PreparedStatement prepare() throws SQLException {
+        Connection connection = mySQL.getConnection();
+        return connection.prepareStatement(query);
     }
 
     public Results getResults() throws SQLException {

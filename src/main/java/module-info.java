@@ -23,6 +23,7 @@ module com.github.badaccuracy.id.dutisa {
     requires google.api.client;
 
     requires com.google.gson;
+    requires org.apache.commons.io;
 
     opens com.github.badaccuracy.id.dutisa;
     exports com.github.badaccuracy.id.dutisa;

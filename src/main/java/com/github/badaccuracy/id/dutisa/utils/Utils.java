@@ -6,12 +6,9 @@ import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.Base64;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.jar.JarEntry;
@@ -79,21 +76,4 @@ public class Utils {
         return DuTiSa.class.getClassLoader().getResource(path);
     }
 
-    @SneakyThrows
-    public String imageToBase64(File photo) {
-        byte[] bytes = new byte[(int) photo.length()];
-        return Base64.getEncoder().encodeToString(bytes);
-    }
-
-    @SneakyThrows
-    public File base64ToImage(String base64) {
-        byte[] bytes = Base64.getDecoder().decode(base64);
-        try (OutputStream outputStream = new FileOutputStream("assets/photos/" + System.currentTimeMillis() + ".jpg")) {
-            outputStream.write(bytes);
-        }
-
-        File file = new File("assets/photos/" + System.currentTimeMillis() + ".jpg");
-        file.deleteOnExit();
-        return file;
-    }
 }

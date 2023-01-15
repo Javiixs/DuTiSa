@@ -2,6 +2,7 @@ package com.github.badaccuracy.id.dutisa.database.connector;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -55,6 +56,10 @@ public class MySQL {
 
     public void executeQuery(String query) throws SQLException {
         new Query(query, this).execute();
+    }
+
+    public PreparedStatement prepareQuery(String query) throws SQLException {
+        return new Query(query, this).prepare();
     }
 
     public Results results(String query) throws SQLException {

@@ -7,6 +7,11 @@ import com.github.badaccuracy.id.dutisa.database.objects.LoginData;
 import com.github.badaccuracy.id.dutisa.database.objects.TraineeData;
 import lombok.Getter;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.sql.Blob;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -45,18 +50,36 @@ public class TraineeDatastore {
     private void loadTrainees() {
         duTiSa.getExecutorManager().gocExecutor("TraineeDL")
                 .execute(() -> {
+                    File folder = new File("assets/trainee");
+                    if (!folder.exists()) {
+                        folder.mkdirs();
+                    }
+
                     try (Results results = mySQL.results("SELECT * FROM ListTrainee;")) {
                         while (true) {
                             ResultSet set = results.getResultSet();
                             if (!set.next())
                                 break;
 
+
+                            Blob blob = set.getBlob("TraineePicture");
+                            File file = new File("assets/trainee/", set.getString("TraineeNumber") + ".jpeg");
+                            file.createNewFile();
+                            file.deleteOnExit();
+                            try (FileOutputStream outputStream = new FileOutputStream(file)) {
+                                byte[] bytes = blob.getBytes(1, (int) blob.length());
+                                outputStream.write(bytes);
+                            }
+
+                            System.out.println("Loaded trainee " + set.getString("TraineeNumber") + " - " + set.getString("TraineeName"));
+                            System.out.println("Saved to " + file.getAbsolutePath());
+
                             TraineeData traineeData = new TraineeData(
                                     set.getString("TraineeNumber"),
                                     set.getString("TraineeName"),
                                     set.getString("Jurusan"),
                                     set.getString("Angkatan"),
-                                    set.getString("TraineePicture")
+                                    file
                             );
 
                             LoginData loginData = new LoginData(
@@ -76,15 +99,17 @@ public class TraineeDatastore {
         duTiSa.getExecutorManager().gocExecutor("TraineeUL")
                 .execute(() -> {
                     try {
-                        String query = "INSERT INTO ListTrainee (TraineeNumber, TraineeName, TraineePassword, Jurusan, Angkatan, TraineePicture) VALUES ('" +
-                                traineeData.getTraineeNumber() + "', '" +
-                                traineeData.getTraineeName() + "', '" +
-                                traineeData.getLoginData().getHashedPassword() + "', '" +
-                                traineeData.getJurusan() + "', '" +
-                                traineeData.getAngkatan() + "', '" +
-                                traineeData.getPhoto() + "');";
-                        System.out.println(query);
-                        mySQL.executeQuery(query);
+                        String prepared = "INSERT INTO ListTrainee (TraineeNumber, TraineeName, TraineePassword, Jurusan, Angkatan, TraineePicture) VALUES (?, ?, ?, ?, ?, ?);";
+                        PreparedStatement statement = mySQL.prepareQuery(prepared);
+                        statement.setString(1, traineeData.getTraineeNumber());
+                        statement.setString(2, traineeData.getTraineeName());
+                        statement.setString(3, traineeData.getLoginData().getHashedPassword());
+                        statement.setString(4, traineeData.getMajor());
+                        statement.setString(5, traineeData.getBinusian());
+                        statement.setBlob(6, new FileInputStream(traineeData.getPhoto()));
+                        System.out.println(statement);
+
+                        statement.execute();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

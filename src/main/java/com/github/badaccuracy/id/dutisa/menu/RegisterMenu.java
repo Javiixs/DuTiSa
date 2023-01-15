@@ -47,10 +47,15 @@ public class RegisterMenu {
         GridPane gridPane = new GridPane();
 
         traineeNumber = new TextField();
+        traineeNumber.setOnAction(this.onSubmit());
         traineeName = new TextField();
+        traineeName.setOnAction(this.onSubmit());
         password = new PasswordField();
+        password.setOnAction(this.onSubmit());
         jurusan = new TextField();
+        jurusan.setOnAction(this.onSubmit());
         angkatan = new TextField();
+        angkatan.setOnAction(this.onSubmit());
 
         Label usernameLabel = new Label("Trainee Number");
         usernameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));

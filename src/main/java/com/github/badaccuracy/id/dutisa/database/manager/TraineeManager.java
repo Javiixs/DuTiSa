@@ -11,6 +11,8 @@ import com.github.badaccuracy.id.dutisa.utils.Utils;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TraineeManager {
 
@@ -44,8 +46,13 @@ public class TraineeManager {
                 });
     }
 
+    public List<TraineeData> getTrainees() {
+        return new ArrayList<>(traineeDatastore.getTraineeMap().values());
+    }
+
     public boolean canLogin(String traineeNumber, String password) {
-        String hashedPassword = Utils.hashPassword(password);        return traineeDatastore.getTrainee(traineeNumber).getLoginData().getHashedPassword().equals(hashedPassword);
+        String hashedPassword = Utils.hashPassword(password);
+        return traineeDatastore.getTrainee(traineeNumber).getLoginData().getHashedPassword().equals(hashedPassword);
     }
 
     public boolean canRegister(String traineeNumber, String traineeName, String password, String jurusan, String angkatan, File photo) {
@@ -55,8 +62,7 @@ public class TraineeManager {
         }
 
         String hashedPassword = Utils.hashPassword(password);
-        String imageBase64 = Utils.imageToBase64(photo);
-        TraineeData traineeData = new TraineeData(traineeNumber, traineeName, jurusan, angkatan, imageBase64);
+        TraineeData traineeData = new TraineeData(traineeNumber, traineeName, jurusan, angkatan, photo);
 
         LoginData loginData = new LoginData(traineeNumber, hashedPassword);
         traineeData.setLoginData(loginData);
