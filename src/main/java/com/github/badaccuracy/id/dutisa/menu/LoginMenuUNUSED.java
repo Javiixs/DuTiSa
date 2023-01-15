@@ -143,13 +143,13 @@ public class LoginMenuUNUSED {
                 return;
             }
 
-            new MainMenu(stage);
+            new MainMenuUNUSED(stage);
         };
     }
 
     private EventHandler<ActionEvent> onRegister() {
         return event -> {
-            new RegisterMenu(stage);
+            new RegisterMenuUNUSED(stage);
         };
     }
 

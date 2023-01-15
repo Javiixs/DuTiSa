@@ -6,163 +6,280 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.FileChooser;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RegisterMenu {
 
     private Stage stage;
     private Scene scene;
 
-    private TextField traineeNumber;
-    private TextField traineeName;
-    private PasswordField password;
-    private TextField jurusan;
-    private TextField angkatan;
-
+    private TextField usernameField;
+    private TextField realNameField;
+    private PasswordField passwordField;
+    private TextField angkatanField;
+    private TextField majorField;
     private File pfpFile = null;
+
+
     private Label errorLabel;
 
     public RegisterMenu(Stage stage) {
         this.stage = stage;
         initUI();
 
+        AtomicReference<Double> x = new AtomicReference<>(0.0);
+        AtomicReference<Double> y = new AtomicReference<>(0.0);
+        scene.setOnMousePressed(event -> {
+            x.set(event.getSceneX());
+            y.set(event.getSceneY());
+        });
+
+        scene.setOnMouseDragged(event -> {
+            stage.setX(event.getScreenX() - x.get());
+            stage.setY(event.getScreenY() - y.get());
+        });
+        scene.setFill(Color.TRANSPARENT);
+
+        stage.setOnCloseRequest((event) -> System.exit(0));
         stage.setScene(scene);
+        stage.setTitle("NAR 23-1");
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.setResizable(false);
         stage.show();
     }
 
     private void initUI() {
-        GridPane gridPane = new GridPane();
+        StackPane rootPane = new StackPane();
+        rootPane.setStyle("-fx-background-color: transparent;");
 
-        traineeNumber = new TextField();
-        traineeNumber.setOnAction(this.onSubmit());
-        traineeName = new TextField();
-        traineeName.setOnAction(this.onSubmit());
-        password = new PasswordField();
-        password.setOnAction(this.onSubmit());
-        jurusan = new TextField();
-        jurusan.setOnAction(this.onSubmit());
-        angkatan = new TextField();
-        angkatan.setOnAction(this.onSubmit());
+        String cssFile = "assets/css/style.css";
+        File file = Utils.getFile(cssFile);
+        String styleCss = file.toURI().toString();
 
-        Label usernameLabel = new Label("Trainee Number");
-        usernameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        gridPane.add(usernameLabel, 0, 1);
-        gridPane.add(traineeNumber, 1, 1);
+        AnchorPane loginPane = new AnchorPane();
+        loginPane.setStyle("-fx-background-color: transparent;");
+        loginPane.getStyleClass().add("blue-purple-gradient");
+        loginPane.getStylesheets().add(styleCss);
+        loginPane.applyCss();
+        rootPane.getChildren().add(loginPane);
 
-        Label nameLabel = new Label("Name");
-        nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        gridPane.add(nameLabel, 0, 2);
-        gridPane.add(traineeName, 1, 2);
+        // left
+        AnchorPane leftPane = new AnchorPane();
+        leftPane.setLayoutY(-4.0);
+        leftPane.setPrefWidth(500);
+        leftPane.setPrefHeight(600);
+        leftPane.getStylesheets().add(styleCss);
+        leftPane.getStyleClass().add("blue-purple-gradient");
+        leftPane.applyCss();
 
-        Label passwordLabel = new Label("Password");
-        passwordLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        gridPane.add(passwordLabel, 0, 3);
-        gridPane.add(password, 1, 3);
+        VBox imageBox = new VBox();
+        imageBox.setLayoutY(70);
+        imageBox.setLayoutX(120);
+        ImageView imageView = new ImageView();
+        File logoFile = Utils.getFile("assets/images/logo.png");
+        imageView.setImage(new Image(logoFile.toURI().toString()));
+        imageView.setPreserveRatio(true);
+        imageView.setPickOnBounds(true);
+        imageView.setFitWidth(272);
+        imageView.setFitHeight(272);
 
-        Label registerLabel = new Label("Register");
-        registerLabel.setAlignment(Pos.CENTER);
-        registerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        gridPane.add(registerLabel, 0, 0);
+        imageBox.getChildren().add(imageView);
+        leftPane.getChildren().add(imageBox);
 
-        Label jurusanLabel = new Label("Jurusan");
-        jurusanLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        gridPane.add(jurusanLabel, 0, 4);
-        gridPane.add(jurusan, 1, 4);
+        Label narlabel = new Label("NAR 23-1");
+        narlabel.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 28));
+        narlabel.setTextFill(Color.WHITE);
+        narlabel.setAlignment(Pos.CENTER);
+        narlabel.setContentDisplay(ContentDisplay.CENTER);
+        HBox labelBox = new HBox(narlabel);
+        labelBox.setLayoutX(190);
+        labelBox.setLayoutY(390);
+        labelBox.setAlignment(Pos.CENTER);
+        leftPane.getChildren().add(labelBox);
 
-        Label angkatanLabel = new Label("Angkatan");
-        angkatanLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        gridPane.add(angkatanLabel, 0, 5);
-        gridPane.add(angkatan, 1, 5);
+        Label mottoLabel = new Label("\"Breaking and Overcoming Challenges Through \n          Courage, Hardword and Persistence\"");
+        mottoLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        mottoLabel.setTextFill(Color.WHITE);
+        mottoLabel.setAlignment(Pos.CENTER);
+        mottoLabel.setContentDisplay(ContentDisplay.CENTER);
+        HBox mottoBox = new HBox(mottoLabel);
+        mottoBox.setLayoutX(120);
+        mottoBox.setLayoutY(430);
+        mottoBox.setAlignment(Pos.CENTER);
+        leftPane.getChildren().add(mottoBox);
 
-        File backgroundFile = Utils.getFile("assets/images/gradient.png");
-        Image backgroundImage = new Image(backgroundFile.toURI().toString());
-        BackgroundSize backgroundSize = new BackgroundSize(1, 1, true, true, false, false);
-        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-        gridPane.setBackground(new Background(background));
+        loginPane.getChildren().add(leftPane);
+
+        // right
+        AnchorPane rightPane = new AnchorPane();
+        rightPane.setPrefWidth(520);
+        rightPane.setPrefHeight(560);
+        rightPane.setLayoutY(20);
+        rightPane.setLayoutX(500);
+        rightPane.setStyle("-fx-background-color: #F3F3F3;");
+        rightPane.applyCss();
+
+        Label loginLabel = new Label("Register");
+        loginLabel.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+        loginLabel.setTextFill(Paint.valueOf("#e34c9d"));
+        loginLabel.setAlignment(Pos.CENTER);
+        loginLabel.setContentDisplay(ContentDisplay.CENTER);
+        loginLabel.setLayoutX(200);
+        loginLabel.setLayoutY(120);
+        rightPane.getChildren().add(loginLabel);
+
+        usernameField = new TextField();
+        usernameField.setPromptText("Trainee Number");
+        usernameField.setPrefWidth(400);
+        usernameField.setPrefHeight(30);
+        usernameField.setAlignment(Pos.CENTER);
+        usernameField.getStylesheets().add(styleCss);
+        usernameField.getStyleClass().add("login-field");
+        usernameField.applyCss();
+        usernameField.setLayoutX(50);
+        usernameField.setLayoutY(175);
+        rightPane.getChildren().add(usernameField);
+
+        realNameField = new TextField();
+        realNameField.setPromptText("Name");
+        realNameField.setPrefWidth(400);
+        realNameField.setPrefHeight(30);
+        realNameField.setAlignment(Pos.CENTER);
+        realNameField.getStylesheets().add(styleCss);
+        realNameField.getStyleClass().add("login-field");
+        realNameField.applyCss();
+        realNameField.setLayoutX(50);
+        realNameField.setLayoutY(215);
+        rightPane.getChildren().add(realNameField);
+
+        passwordField = new PasswordField();
+        passwordField.setPromptText("Password");
+        passwordField.setPrefWidth(400);
+        passwordField.setPrefHeight(30);
+        passwordField.setAlignment(Pos.CENTER);
+        passwordField.getStylesheets().add(styleCss);
+        passwordField.getStyleClass().add("login-field");
+        passwordField.applyCss();
+        passwordField.setLayoutX(50);
+        passwordField.setLayoutY(255);
+        rightPane.getChildren().add(passwordField);
+
+        angkatanField = new TextField();
+        angkatanField.setPromptText("Angkatan");
+        angkatanField.setPrefWidth(400);
+        angkatanField.setPrefHeight(30);
+        angkatanField.setAlignment(Pos.CENTER);
+        angkatanField.getStylesheets().add(styleCss);
+        angkatanField.getStyleClass().add("login-field");
+        angkatanField.applyCss();
+        angkatanField.setLayoutX(50);
+        angkatanField.setLayoutY(295);
+        rightPane.getChildren().add(angkatanField);
+
+        majorField = new TextField();
+        majorField.setPromptText("Jurusan");
+        majorField.setPrefWidth(400);
+        majorField.setPrefHeight(30);
+        majorField.setAlignment(Pos.CENTER);
+        majorField.getStylesheets().add(styleCss);
+        majorField.getStyleClass().add("login-field");
+        majorField.applyCss();
+        majorField.setLayoutX(50);
+        majorField.setLayoutY(345);
+        majorField.setLayoutY(335);
+        rightPane.getChildren().add(majorField);
+
+//        binusianField = new binusianField();
+//        binusianField.setPromptText("Binusian");
+//        binusianField.setPrefWidth(400);
+//        binusianField.setPrefHeight(30);
+//        binusianField.setAlignment(Pos.CENTER);
+//        binusianField.getStylesheets().add(styleCss);
+//        binusianField.getStyleClass().add("login-field");
+//        binusianField.applyCss();
+//        binusianField.setLayoutX(50);
+//        binusianField.setLayoutY(375);
+//        rightPane.getChildren().add(binusianField);
 
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select your profile picture");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
-        );
-
-        Button button = new Button("Select profile picture");
-        button.setOnAction(event -> {
-            pfpFile = fileChooser.showOpenDialog(null);
-            if (pfpFile != null) {
-                System.out.println(pfpFile.getAbsolutePath());
-            }
-        });
-        HBox fileChooserBox = new HBox(button);
-        fileChooserBox.setAlignment(Pos.CENTER);
-        gridPane.add(fileChooserBox, 1, 6);
-
-        HBox loginRegister = new HBox();
-        loginRegister.setAlignment(Pos.CENTER);
-        loginRegister.setSpacing(15);
+        HBox buttonsBox = new HBox();
+        buttonsBox.setSpacing(50);
+        buttonsBox.setPrefHeight(100);
+        buttonsBox.setPrefWidth(500);
+        buttonsBox.setLayoutX(1);
+        buttonsBox.setLayoutY(370);
+        buttonsBox.setAlignment(Pos.CENTER);
 
         Button loginButton = new Button("Create Account");
-        loginButton.setMinWidth(75);
-        loginButton.setMinHeight(30);
+        loginButton.setPrefWidth(175);
+        loginButton.setPrefHeight(50);
+        loginButton.getStylesheets().add(styleCss);
+        loginButton.getStyleClass().add("login-btn");
+        loginButton.setTextAlignment(TextAlignment.CENTER);
+        loginButton.applyCss();
         loginButton.setOnAction(this.onSubmit());
-        loginRegister.getChildren().add(loginButton);
+        buttonsBox.getChildren().add(loginButton);
 
         Button registerButton = new Button("Back to Login");
-        registerButton.setMinWidth(75);
-        registerButton.setMinHeight(30);
+        registerButton.setPrefWidth(175);
+        registerButton.setPrefHeight(50);
+        registerButton.getStylesheets().add(styleCss);
+        registerButton.getStyleClass().add("login-btn");
+        registerButton.setTextAlignment(TextAlignment.CENTER);
+        registerButton.applyCss();
         registerButton.setOnAction(this.onRegister());
-        loginRegister.getChildren().add(registerButton);
+        buttonsBox.getChildren().add(registerButton);
 
-        gridPane.add(loginRegister, 1, 7);
-
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setVgap(15);
-        gridPane.setHgap(15);
+        rightPane.getChildren().add(buttonsBox);
 
         errorLabel = new Label();
-        errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
-        errorLabel.setTextFill(Color.RED);
-        gridPane.add(errorLabel, 1, 8);
+        errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        errorLabel.setTextFill(Paint.valueOf("#ff0000"));
+        errorLabel.setAlignment(Pos.CENTER);
+        errorLabel.setContentDisplay(ContentDisplay.CENTER);
+        errorLabel.setLayoutX(170);
+        errorLabel.setLayoutY(500);
+        rightPane.getChildren().add(errorLabel);
 
-        scene = new Scene(gridPane, 1080, 720);
+        loginPane.getChildren().add(rightPane);
+
+        scene = new Scene(rootPane);
     }
+
 
     private EventHandler<ActionEvent> onSubmit() {
         return event -> {
-            String traineeNumber = this.traineeNumber.getText();
-            String traineeName = this.traineeName.getText();
-            String password = this.password.getText();
-            String jurusan = this.jurusan.getText();
-            String angkatan = this.angkatan.getText();
+            String username = this.usernameField.getText();
+            String password = this.passwordField.getText();
 
-            if (traineeNumber.isEmpty() || password.isEmpty() || jurusan.isEmpty() || angkatan.isEmpty() || pfpFile == null) {
-                errorLabel.setText("Please fill all the fields!");
+            if (username.isEmpty() || password.isEmpty()) {
+                errorLabel.setText("Please fill in all fields");
                 return;
             }
 
-            boolean canRegister = DuTiSa.getInstance().getTraineeManager()
-                    .canRegister(traineeNumber, traineeName, password, jurusan, angkatan, pfpFile);
-
-            if (!canRegister) {
-                errorLabel.setText("Username already taken!");
+            boolean canLogin = DuTiSa.getInstance().getTraineeManager().canLogin(username, password);
+            if (!canLogin) {
+                errorLabel.setText("Invalid username or password");
                 return;
             }
 
-            // main menu
+            new MainMenu(stage);
         };
     }
 

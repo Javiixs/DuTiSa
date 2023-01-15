@@ -31,6 +31,8 @@ public class LoginMenu {
 
     private TextField usernameField;
     private PasswordField passwordField;
+
+
     private Label errorLabel;
 
     public LoginMenu(Stage stage) {
@@ -52,8 +54,6 @@ public class LoginMenu {
 
         stage.setOnCloseRequest((event) -> System.exit(0));
         stage.setScene(scene);
-
-
         stage.setTitle("NAR 23-1");
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setResizable(false);
@@ -109,7 +109,7 @@ public class LoginMenu {
         labelBox.setAlignment(Pos.CENTER);
         leftPane.getChildren().add(labelBox);
 
-        Label mottoLabel = new Label("\"Breaking and Overcoming Challenges Through \n          Courage, Hard Work and Persistence\"");
+        Label mottoLabel = new Label("\"Breaking and Overcoming Challenges Through \n          Courage, Hardword and Persistence\"");
         mottoLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         mottoLabel.setTextFill(Color.WHITE);
         mottoLabel.setAlignment(Pos.CENTER);
@@ -141,7 +141,7 @@ public class LoginMenu {
         rightPane.getChildren().add(loginLabel);
 
         usernameField = new TextField();
-        usernameField.setPromptText("Username");
+        usernameField.setPromptText("Trainee Number");
         usernameField.setPrefWidth(400);
         usernameField.setPrefHeight(30);
         usernameField.setAlignment(Pos.CENTER);
