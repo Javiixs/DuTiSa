@@ -20,6 +20,11 @@ public class ExecutorManager {
         NExecutor nExecutor = new NExecutor() {
 
             @Override
+            public CompletableFuture<Void> submit(Runnable runnable) {
+                return CompletableFuture.runAsync(runnable, executor);
+            }
+
+            @Override
             public void execute(@NotNull Runnable runnable) {
                 executor.execute(runnable);
             }
@@ -51,6 +56,10 @@ public class ExecutorManager {
 
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         NExecutor nExecutor = new NExecutor() {
+
+            public CompletableFuture<Void> submit(Runnable runnable) {
+                throw new UnsupportedOperationException("Cannot submit a runnable to a scheduled executor");
+            }
 
             @Override
             public void execute(@NotNull Runnable runnable) {
@@ -89,10 +98,15 @@ public class ExecutorManager {
     }
 
     public interface NExecutor extends Executor {
+
+        CompletableFuture<Void> submit(Runnable runnable);
+
         void shutdown();
 
         void awaitTermination(long timeout, TimeUnit unit) throws InterruptedException;
 
         ScheduledFuture<?> schedule(Runnable runnable, long delay, long period, TimeUnit timeUnit);
+
+
     }
 }

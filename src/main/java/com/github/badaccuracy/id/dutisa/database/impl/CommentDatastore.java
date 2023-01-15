@@ -18,28 +18,9 @@ public class CommentDatastore {
 
     public CommentDatastore(DuTiSa duTiSa, MySQL mySQL) {
         this.duTiSa = duTiSa;
-        this.mySQL = mySQL;
         this.commentMap = new ConcurrentHashMap<>();
+        this.mySQL = mySQL;
 
-        duTiSa.getExecutorManager().gocExecutor("CommentUL")
-                .execute(() -> {
-                    duTiSa.getExecutorManager().gocExecutor("CommentDL")
-                            .execute(() -> {
-                                try {
-                                    mySQL.executeQuery("CREATE TABLE IF NOT EXISTS comments (" +
-                                            "comment_id VARCHAR(255) NOT NULL AUTO_INCREMENT," +
-                                            "trainee_number VARCHAR(255) NOT NULL," +
-                                            "comment VARCHAR(255) NOT NULL," +
-                                            "commenter VARCHAR(255) NOT NULL," +
-                                            "date VARCHAR(255) NOT NULL," +
-                                            "PRIMARY KEY (comment_id)," +
-                                            "FOREIGN KEY (trainee_number) REFERENCES trainees (trainee_number)" +
-                                            ");");
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                });
         this.loadComments();
     }
 
@@ -68,18 +49,18 @@ public class CommentDatastore {
     private void loadComments() {
         duTiSa.getExecutorManager().gocExecutor("CommentDL")
                 .execute(() -> {
-                    try (Results results = mySQL.results("SELECT * FROM comments;")) {
+                    try (Results results = mySQL.results("SELECT * FROM Motivasi;")) {
                         while (true) {
                             ResultSet set = results.getResultSet();
                             if (!set.next())
                                 break;
 
                             CommentData commentData = new CommentData(
-                                    set.getInt("comment_id"),
-                                    set.getString("trainee_number"),
-                                    set.getString("comment"),
-                                    set.getString("commenter"),
-                                    set.getString("date")
+                                    set.getInt("CommentID"),
+                                    set.getString("TraineeNumber"),
+                                    set.getString("PesanMotivasi"),
+                                    set.getString("SenderID"),
+                                    set.getDate("CommentDate")
                             );
                             addComment(commentData);
                         }
@@ -93,11 +74,10 @@ public class CommentDatastore {
         duTiSa.getExecutorManager().gocExecutor("CommentUL")
                 .execute(() -> {
                     try {
-                        mySQL.executeQuery("INSERT INTO comments (trainee_number, comment, commenter, date) VALUES ('" +
+                        mySQL.executeQuery("INSERT INTO Motivasi (TraineeNumber, PesanMotivasi, SenderID) VALUES ('" +
                                 commentData.getTraineeNumber() + "', '" +
                                 commentData.getComment() + "', '" +
-                                commentData.getCommenter() + "', '" +
-                                commentData.getDate() + "')");
+                                commentData.getCommenter() + "');");
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }

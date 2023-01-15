@@ -9,6 +9,9 @@ public class TraineeData {
 
     private final String traineeNumber;
     private final String traineeName;
+    private final String jurusan;
+    private final String angkatan;
+    private final String photo;
 
     private LoginData loginData = null;
 

@@ -55,7 +55,10 @@ dependencies {
     compileOnly 'com.google.apis:google-api-services-sheets:v4-rev20220927-2.0.0'
 
     // mysql java connector
-    compileOnly 'mysql:mysql-connector-java:8.0.28'
+    extraLibs 'mysql:mysql-connector-java:8.0.28'
+
+    // gson
+    extraLibs 'com.google.code.gson:gson:2.10.1'
 
     configurations.compileOnly.extendsFrom(configurations.extraLibs)
 }

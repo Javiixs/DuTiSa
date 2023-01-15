@@ -8,7 +8,6 @@ import com.github.badaccuracy.id.dutisa.database.objects.TraineeData;
 import lombok.Getter;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TraineeDatastore {
@@ -23,20 +22,7 @@ public class TraineeDatastore {
         this.traineeMap = new ConcurrentHashMap<>();
         this.mySQL = mySQL;
 
-        duTiSa.getExecutorManager().gocExecutor("TraineeUL")
-                .execute(() -> {
-                    try {
-                        mySQL.executeQuery("CREATE TABLE IF NOT EXISTS trainees (" +
-                                "trainee_number VARCHAR(255) NOT NULL," +
-                                "trainee_name VARCHAR(255) NOT NULL," +
-                                "password VARCHAR(255) NOT NULL," +
-                                "PRIMARY KEY (trainee_number)" +
-                                ");");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-
-                });
+        this.loadTrainees();
     }
 
     public void addTrainee(TraineeData traineeData) {
@@ -52,27 +38,30 @@ public class TraineeDatastore {
         this.loadTrainees();
     }
 
-    private void insertNewTrainee(TraineeData traineeData) {
+    public void insertNewTrainee(TraineeData traineeData) {
         this.insertNewTraineeAsync(traineeData);
     }
 
     private void loadTrainees() {
         duTiSa.getExecutorManager().gocExecutor("TraineeDL")
                 .execute(() -> {
-                    try (Results results = mySQL.results("SELECT * FROM trainees;")) {
+                    try (Results results = mySQL.results("SELECT * FROM ListTrainee;")) {
                         while (true) {
                             ResultSet set = results.getResultSet();
                             if (!set.next())
                                 break;
 
                             TraineeData traineeData = new TraineeData(
-                                    set.getString("trainee_number"),
-                                    set.getString("trainee_name")
+                                    set.getString("TraineeNumber"),
+                                    set.getString("TraineeName"),
+                                    set.getString("Jurusan"),
+                                    set.getString("Angkatan"),
+                                    set.getString("TraineePicture")
                             );
 
                             LoginData loginData = new LoginData(
-                                    set.getString("trainee_number"),
-                                    set.getString("password")
+                                    set.getString("TraineeNumber"),
+                                    set.getString("TraineePassword")
                             );
                             traineeData.setLoginData(loginData);
                             addTrainee(traineeData);
@@ -87,10 +76,15 @@ public class TraineeDatastore {
         duTiSa.getExecutorManager().gocExecutor("TraineeUL")
                 .execute(() -> {
                     try {
-                        mySQL.executeQuery("INSERT INTO trainees (trainee_number, trainee_name, password) VALUES ('" +
+                        String query = "INSERT INTO ListTrainee (TraineeNumber, TraineeName, TraineePassword, Jurusan, Angkatan, TraineePicture) VALUES ('" +
                                 traineeData.getTraineeNumber() + "', '" +
                                 traineeData.getTraineeName() + "', '" +
-                                traineeData.getLoginData().getHashedPassword() + "');");
+                                traineeData.getLoginData().getHashedPassword() + "', '" +
+                                traineeData.getJurusan() + "', '" +
+                                traineeData.getAngkatan() + "', '" +
+                                traineeData.getPhoto() + "');";
+                        System.out.println(query);
+                        mySQL.executeQuery(query);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

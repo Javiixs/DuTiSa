@@ -34,7 +34,7 @@ public class SheetAPI {
     private final List<String> scope = Collections.singletonList(SheetsScopes.SPREADSHEETS);
 
     private Credential getCredential(NetHttpTransport httpTransport) {
-        try (InputStream stream = SheetAPI.class.getResourceAsStream("/credentials.json")) {
+        try (InputStream stream = SheetAPI.class.getResourceAsStream("/assets/credentials.json")) {
             if (stream == null) {
                 return null;
             }

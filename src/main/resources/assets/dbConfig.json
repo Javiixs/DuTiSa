@@ -1,0 +1,8 @@
+{
+  "host": "13.229.133.193",
+  "port": 3306,
+  "database": "",
+  "username": "root",
+  "password": "Pass@123",
+  "ssl": false
+}

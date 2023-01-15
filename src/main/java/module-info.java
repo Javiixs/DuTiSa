@@ -22,6 +22,8 @@ module com.github.badaccuracy.id.dutisa {
     requires com.google.api.client.extensions.jetty.auth;
     requires google.api.client;
 
+    requires com.google.gson;
+
     opens com.github.badaccuracy.id.dutisa;
     exports com.github.badaccuracy.id.dutisa;
 }
