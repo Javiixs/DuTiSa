@@ -30,6 +30,7 @@ public class TraineeManager {
                 databaseConfig.getPassword(),
                 databaseConfig.isUseSSL()
         );
+
         main.getExecutorManager().gocExecutor("MySQLLoader")
                 .execute(() -> {
                     try {
@@ -41,20 +42,10 @@ public class TraineeManager {
                     this.commentDatastore = new CommentDatastore(main, mySQL);
                     this.traineeDatastore = new TraineeDatastore(main, mySQL);
                 });
-
     }
 
     public boolean canLogin(String traineeNumber, String password) {
-        TraineeData trainee = traineeDatastore.getTrainee(traineeNumber);
-        assert trainee != null;
-
-        LoginData loginData = trainee.getLoginData();
-        assert loginData != null;
-        if (!loginData.getTraineeNumber().equals(traineeNumber)) {
-            return false;
-        }
-
-        return loginData.equals(new LoginData(traineeNumber, password));
+        String hashedPassword = Utils.hashPassword(password);        return traineeDatastore.getTrainee(traineeNumber).getLoginData().getHashedPassword().equals(hashedPassword);
     }
 
     public boolean canRegister(String traineeNumber, String traineeName, String password, String jurusan, String angkatan, File photo) {

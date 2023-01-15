@@ -4,6 +4,7 @@ import com.github.badaccuracy.id.dutisa.DuTiSa;
 import com.github.badaccuracy.id.dutisa.utils.Utils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -92,6 +93,7 @@ public class LoginMenu {
         errorLabel = new Label();
         errorLabel.setFont(Font.font("Arial", FontWeight.BOLD, 13));
         errorLabel.setTextFill(Color.RED);
+        new Insets(0, 0, 0, 0);
         gridPane.add(errorLabel, 1, 4);
 
         scene = new Scene(gridPane, 1080, 720);
